@@ -21,6 +21,7 @@
 //#define IEmoteDevice__TYPE IEmoteDevice_3_4
 //#define IEmotePlayer__TYPE IEmotePlayer_3_4
 
+#include <cstdint>
 #include "iemote.h"
 #include "Emote.h"
 #include "EmoteDevice.h"
@@ -36,16 +37,16 @@ struct LVERTEX {
 
 #define FVF_LVERTEX (D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX1)
 
-static UInt32 clp(UInt32 x)
+static uint32_t clp(uint32_t x)
 {
 	x--;
-	UInt32 expr_06 = x;
+	uint32_t expr_06 = x;
 	x = (expr_06 | expr_06 >> 1);
-	UInt32 expr_0D = x;
+	uint32_t expr_0D = x;
 	x = (expr_0D | expr_0D >> 2);
-	UInt32 expr_14 = x;
+	uint32_t expr_14 = x;
 	x = (expr_14 | expr_14 >> 4);
-	UInt32 expr_1B = x;
+	uint32_t expr_1B = x;
 	x = (expr_1B | expr_1B >> 8);
 	return (x >> 16 | x) + 1;
 }

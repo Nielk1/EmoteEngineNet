@@ -10,7 +10,7 @@ namespace EmoteEngineNet {
 		backing_store__UseTextureFilter = false;
 	}
 
-	UInt32 EmoteDevice::AddRef() {
+	uint32_t EmoteDevice::AddRef() {
 		return device->AddRef();
 	}
 
@@ -113,7 +113,7 @@ namespace EmoteEngineNet {
 		device->SetMaskRegionClipping(state);
 	}
 
-	void EmoteDevice::SetMaxTextureSize(UInt32 width, UInt32 height)
+	void EmoteDevice::SetMaxTextureSize(uint32_t width, uint32_t height)
 	{
 		device->SetMaxTextureSize(width, height);
 	}

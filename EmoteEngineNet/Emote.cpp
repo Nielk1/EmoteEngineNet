@@ -396,7 +396,7 @@ namespace EmoteEngineNet {
 		sD3DDevice->Reset(&d3DPRESENT_PARAMETERS_);
 	}
 
-	UInt32 Emote::D3DTestCooperativeLevel()
+	uint32_t Emote::D3DTestCooperativeLevel()
 	{
 		return sD3DDevice->TestCooperativeLevel();
 	}

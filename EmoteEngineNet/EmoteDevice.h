@@ -20,7 +20,7 @@ namespace EmoteEngineNet {
 
 	public:
 		~EmoteDevice();
-		UInt32 AddRef();
+		uint32_t AddRef();
 
 		AlphaOp GetAlphaOp();
 		MaskMode GetMaskMode();
@@ -39,7 +39,7 @@ namespace EmoteEngineNet {
 		void SetAlphaOp(AlphaOp op);
 		void SetMaskMode(MaskMode mask);
 		void SetMaskRegionClipping(bool state);
-		void SetMaxTextureSize(UInt32 width, UInt32 height);
+		void SetMaxTextureSize(uint32_t width, uint32_t height);
 		void SetMipMapEnabled(bool state);
 		void SetPixelateDivision(int division);
 		void SetProtectTranslucentTextureColor(bool state);

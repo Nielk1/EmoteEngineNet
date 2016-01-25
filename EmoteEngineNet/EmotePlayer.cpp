@@ -28,27 +28,27 @@ namespace EmoteEngineNet {
 		return sPlayer->Clone();
 	}
 
-	UInt32 EmotePlayer::CountDiffTimelines()
+	uint32_t EmotePlayer::CountDiffTimelines()
 	{
 		return sPlayer->CountDiffTimelines();
 	}
 
-	UInt32 EmotePlayer::CountMainTimelines()
+	uint32_t EmotePlayer::CountMainTimelines()
 	{
 		return sPlayer->CountMainTimelines();
 	}
 
-	UInt32 EmotePlayer::CountPlayingTimelines()
+	uint32_t EmotePlayer::CountPlayingTimelines()
 	{
 		return sPlayer->CountPlayingTimelines();
 	}
 
-	UInt32 EmotePlayer::CountVariableFrameAt(UInt32 variableIndex)
+	uint32_t EmotePlayer::CountVariableFrameAt(uint32_t variableIndex)
 	{
 		return sPlayer->CountVariableFrameAt(variableIndex);
 	}
 
-	UInt32 EmotePlayer::CountVariables()
+	uint32_t EmotePlayer::CountVariables()
 	{
 		return sPlayer->CountVariables();
 	}
@@ -68,7 +68,7 @@ namespace EmoteEngineNet {
 		return sPlayer->GetBustScale();
 	}
 
-	UInt32 EmotePlayer::GetColor()
+	uint32_t EmotePlayer::GetColor()
 	{
 		return sPlayer->GetColor();
 	}
@@ -82,7 +82,7 @@ namespace EmoteEngineNet {
 		y = y_;
 	}
 
-	String^ EmotePlayer::GetDiffTimelineLabelAt(UInt32 index)
+	String^ EmotePlayer::GetDiffTimelineLabelAt(uint32_t index)
 	{
 		return gcnew String(sPlayer->GetDiffTimelineLabelAt(index));
 	}
@@ -92,7 +92,7 @@ namespace EmoteEngineNet {
 		return sPlayer->GetHairScale();
 	}
 
-	String^ EmotePlayer::GetMainTimelineLabelAt(UInt32 index)
+	String^ EmotePlayer::GetMainTimelineLabelAt(uint32_t index)
 	{
 		return gcnew String(sPlayer->GetMainTimelineLabelAt(index));
 	}
@@ -107,12 +107,12 @@ namespace EmoteEngineNet {
 		return sPlayer->GetPartsScale();
 	}
 
-	UInt32 EmotePlayer::GetPlayingTimelineFlagsAt(UInt32 index)
+	uint32_t EmotePlayer::GetPlayingTimelineFlagsAt(uint32_t index)
 	{
 		return sPlayer->GetPlayingTimelineFlagsAt(index);
 	}
 
-	String^ EmotePlayer::GetPlayingTimelineLabelAt(UInt32 index)
+	String^ EmotePlayer::GetPlayingTimelineLabelAt(uint32_t index)
 	{
 		return gcnew String(sPlayer->GetPlayingTimelineLabelAt(index));
 	}
@@ -147,17 +147,17 @@ namespace EmoteEngineNet {
 		return sPlayer->GetVariable(StringToCharPtr(var));
 	}
 
-	String^ EmotePlayer::GetVariableFrameLabelAt(UInt32 variableIndex, UInt32 frameIndex)
+	String^ EmotePlayer::GetVariableFrameLabelAt(uint32_t variableIndex, uint32_t frameIndex)
 	{
 		return gcnew String(sPlayer->GetVariableFrameLabelAt(variableIndex, frameIndex));
 	}
 
-	float EmotePlayer::GetVariableFrameValueAt(UInt32 variableIndex, UInt32 frameIndex)
+	float EmotePlayer::GetVariableFrameValueAt(uint32_t variableIndex, uint32_t frameIndex)
 	{
 		return sPlayer->GetVariableFrameValueAt(variableIndex, frameIndex);
 	}
 
-	String^ EmotePlayer::GetVariableLabelAt(UInt32 index)
+	String^ EmotePlayer::GetVariableLabelAt(uint32_t index)
 	{
 		return gcnew String(sPlayer->GetVariableLabelAt(index));
 	}
@@ -237,7 +237,7 @@ namespace EmoteEngineNet {
 		sPlayer->SetBustScale(scale);
 	}
 
-	void EmotePlayer::SetColor(UInt32 rgba, float frameCount, float easing)
+	void EmotePlayer::SetColor(uint32_t rgba, float frameCount, float easing)
 	{
 		sPlayer->SetColor(rgba, frameCount, easing);
 	}

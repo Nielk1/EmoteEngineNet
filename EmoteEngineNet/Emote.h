@@ -44,7 +44,7 @@ namespace EmoteEngineNet {
 		void D3DInitRenderState(int screenWidth, int screenHeight, IntPtr handle);
 		void D3DRelease();
 		void D3DReset();
-		UInt32 D3DTestCooperativeLevel();
+		uint32_t D3DTestCooperativeLevel();
 			
 		void DeletePlayer(String^ player);
 		void DeletePlayer(EmotePlayer^ player);
