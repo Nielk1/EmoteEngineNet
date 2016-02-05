@@ -20,8 +20,10 @@ namespace EmoteEngineNet {
 	public ref class Emote
 	{
 
+#pragma region Construction/Destruction
 	public:
 		Emote(IntPtr dxHandle);
+		Emote(IntPtr dxHandle, String^ EnginePath);
 		Emote(IntPtr handle, bool useD3DSurface);
 		Emote(IntPtr handle, int width, int height);
 		Emote(IntPtr handle, int width, int height, bool useD3DSurface);
@@ -29,43 +31,61 @@ namespace EmoteEngineNet {
 
 	protected:
 		~Emote();
+#pragma endregion Construction/Destruction
 
+#pragma region DirectX
 	public:
-		void LoadEmoteEngine();
-
-		void AttachCanvasTexture();
-			
-		EmotePlayer^ CreatePlayer(String^ name, String^ path);
-
 		void D3DBeginScene();
 		void D3DEndScene();
+
 		void D3DInit(IntPtr handle, int width, int height, bool useD3DSurface, bool setTransparent);
 		void D3DInitRenderState();
 		void D3DInitRenderState(int screenWidth, int screenHeight, IntPtr handle);
+
 		void D3DRelease();
 		void D3DReset();
+
 		uint32_t D3DTestCooperativeLevel();
-			
-		void DeletePlayer(String^ player);
-		void DeletePlayer(EmotePlayer^ player);
-			
-		void DetachCanvasTexture();
-
-		void Draw();
-		void DrawCanvasTexture();
-
-		EmoteDevice^ EmoteInit();
 
 		void OnDeviceLost();
 		void OnDeviceReset();
+#pragma endregion DirectX
 
+#pragma region CanvasTexture
+	public:
+		void AttachCanvasTexture();
+		void DetachCanvasTexture();
+		void DrawCanvasTexture();
+	private:
+		void RequireCanvasTexture();
+#pragma endregion CanvasTexture
+
+#pragma region Add/Remove Player
+	public:
+		EmotePlayer^ CreatePlayer(String^ name, String^ path);
+		EmotePlayer^ CreatePlayer(String^ name, Stream^ stream);
+		void DeletePlayer(String^ player);
+		void DeletePlayer(EmotePlayer^ player);
+#pragma endregion Add/Remove Player
+
+#pragma region PlayerCollectionFunctions
+	public:
+		void Draw();
 		void Show();
 		void Skip();
 		void Update(float frameCount);
+#pragma endregion PlayerCollectionFunctions
 
+
+
+
+	public:
+		void Emote::LoadEmoteEngine(String^ EnginePath);
+		void LoadEmoteEngine();
+		EmoteDevice^ EmoteInit();
 	private:
 		EmoteDevice^ EmoteInit(IntPtr dxHandle);
-		void RequireCanvasTexture();
+
 	
 	public:
 		property int D3DCanvasTexture

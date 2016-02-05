@@ -45,11 +45,14 @@ namespace EmoteEngineNet {
 		void SetProtectTranslucentTextureColor(bool state);
 		void SetShaderModel(ShaderModel shaderModel);
 
-
 	internal:
 		EmoteDevice(::IEmoteDevice__TYPE* sDevice);
 		void OnRenderTarget(IDirect3DTexture9* renderTargetTexture);
 		EmotePlayer ^CreatePlayer(String^ path);
+		EmotePlayer ^CreatePlayer(Stream^ stream);
+
+	private:
+		void EmoteDevice::CopyStreamToNativePtr(Stream^ src, unsigned char* dst);
 
 	internal:
 		property ::IEmoteDevice__TYPE* NativeDevice {

@@ -3,8 +3,13 @@
 
 namespace EmoteEngineNet {
 
+#pragma region Construction/Destruction
 	Emote::Emote(IntPtr dxHandle) {
 		LoadEmoteEngine();
+		EmoteInit(dxHandle);
+	}
+	Emote::Emote(IntPtr dxHandle, String^ EnginePath) {
+		LoadEmoteEngine(EnginePath);
 		EmoteInit(dxHandle);
 	}
 	Emote::Emote(IntPtr handle, bool useD3DSurface) {
@@ -19,7 +24,6 @@ namespace EmoteEngineNet {
 	Emote::Emote(IntPtr handle, int width, int height, bool useD3DSurface, bool setTransparent) {
 		D3DInit(handle, width, height, useD3DSurface, setTransparent);
 	}
-
 	Emote::~Emote()
 	{
 		Dictionary<String^, EmotePlayer^>::ValueCollection::Enumerator^ enumerator = EmotePlayers->Values->GetEnumerator();
@@ -48,45 +52,9 @@ namespace EmoteEngineNet {
 		if (ptrEmoteCreate__TYPE != NULL)
 			FreeLibrary(ptrEmoteCreate__TYPE);
 	}
+#pragma endregion Construction/Destruction
 
-	void Emote::LoadEmoteEngine()
-	{
-		if (EmoteCreate__TYPE == NULL)
-		{
-			ptrEmoteCreate__TYPE = LoadLibraryW((LPCWSTR)(L"emotedriver.dll"));
-			EmoteCreate__TYPE = (EmoteFactoryFunction__TYPE)GetProcAddress(ptrEmoteCreate__TYPE, (LPCSTR)("?EmoteCreate@@YAPAVIEmoteDevice@@ABUInitParam@1@@Z"));
-		}
-	}
-
-	void Emote::AttachCanvasTexture()
-	{
-		RequireCanvasTexture();
-
-		if (!sCanvasTexture)
-			return;
-
-		sD3DDevice->GetRenderTarget(0, &sBackBufferSurface);
-		LPDIRECT3DSURFACE9 surface;
-		sCanvasTexture->GetSurfaceLevel(0, &surface);
-		sD3DDevice->SetRenderTarget(0, surface);
-		surface->Release();
-		D3DVIEWPORT9 vp = { 0, 0, sScreenWidth, sScreenHeight, 0.0f, 1.0f };
-		sD3DDevice->SetViewport(&vp);
-		sD3DDevice->Clear(0, NULL, D3DCLEAR_TARGET, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, 0);
-	}
-
-	EmotePlayer^ Emote::CreatePlayer(String^ name, String^ path)
-	{
-		Lock lock(EmotePlayers);
-		if (!EmotePlayers->ContainsKey(name))
-		{
-			EmotePlayer^ emotePlayer = device->CreatePlayer(path);
-			EmotePlayers->Add(name, emotePlayer);
-			return emotePlayer;
-		}
-		return EmotePlayers[name];
-	}
-
+#pragma region DirectX
 	void Emote::D3DBeginScene()
 	{
 		sD3DDevice->Clear(0, NULL, D3DCLEAR_TARGET, D3DCOLOR_ARGB(0, 0, 0, 0), 1.0f, 0);
@@ -103,7 +71,6 @@ namespace EmoteEngineNet {
 			}
 		}
 	}
-
 	void Emote::D3DEndScene() {
 		sD3DDevice->EndScene();
 		if (useD3DEx)
@@ -204,9 +171,6 @@ namespace EmoteEngineNet {
 			// do... something?
 		}
 	}
-
-
-
 	void Emote::D3DInitRenderState(void)
 	{
 		if (sD3DDevice == NULL)
@@ -268,8 +232,6 @@ namespace EmoteEngineNet {
 		sD3DDevice->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_POINT);
 		sD3DDevice->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_POINT);
 	}
-
-
 	void Emote::D3DInitRenderState(int screenWidth, int screenHeight, IntPtr handle)
 	{
 		sScreenWidth = screenWidth;
@@ -380,7 +342,6 @@ namespace EmoteEngineNet {
 			sSurface = NULL;
 		}
 	}
-
 	void Emote::D3DReset()
 	{
 		_D3DPRESENT_PARAMETERS_ d3DPRESENT_PARAMETERS_;
@@ -401,130 +362,6 @@ namespace EmoteEngineNet {
 		return sD3DDevice->TestCooperativeLevel();
 	}
 
-	void Emote::DeletePlayer(EmotePlayer^ player)
-	{
-		if (player != nullptr)
-		{
-			Lock lock(EmotePlayers);
-			if (EmotePlayers->ContainsValue(player))
-			{
-				List<String^>^ list = gcnew List<String^>();
-				Dictionary<String^, EmotePlayer^>::Enumerator^ enumerator = EmotePlayers->GetEnumerator();
-				if (enumerator->MoveNext())
-				{
-					do
-					{
-						KeyValuePair<String^, EmotePlayer^>^ current = enumerator->Current;
-						if (current->Value == player)
-						{
-							list->Add(current->Key);
-						}
-					} while (enumerator->MoveNext());
-				}
-				List<String^>::Enumerator^ enumerator2 = list->GetEnumerator();
-				if (enumerator2->MoveNext())
-				{
-					do
-					{
-						String^ current2 = enumerator2->Current;
-						EmotePlayers->Remove(current2);
-					} while (enumerator2->MoveNext());
-				}
-			}
-		}
-	}
-
-	void Emote::DeletePlayer(String^ player)
-	{
-		Lock lock(EmotePlayers);
-		if (EmotePlayers->ContainsKey(player))
-		{
-			EmotePlayer^ emotePlayer = EmotePlayers[player];
-			EmotePlayers->Remove(player);
-		}
-	}
-
-
-	void Emote::DetachCanvasTexture(void)
-	{
-		if (!sCanvasTexture)
-			return;
-
-		useD3DSurface = false;
-
-		sD3DDevice->SetRenderTarget(0, sBackBufferSurface);
-		sBackBufferSurface->Release();
-	}
-
-	void Emote::Draw()
-	{
-		Lock lock(EmotePlayers);
-		Dictionary<String^, EmotePlayer^>::ValueCollection::Enumerator^ enumerator = EmotePlayers->Values->GetEnumerator();
-		if (enumerator->MoveNext())
-		{
-			do
-			{
-				EmotePlayer^ current = enumerator->Current;
-				if (current != nullptr)
-				{
-					sEmoteDevice->OnRenderTarget(sCanvasTexture);
-					current->Render();
-				}
-			} while (enumerator->MoveNext());
-		}
-	}
-
-	void Emote::DrawCanvasTexture()
-	{
-		if (!sCanvasTexture)
-			return;
-
-		float vl = -sScreenWidth / 2;
-		float vt = -sScreenHeight / 2;
-		float vr = sScreenWidth / 2;
-		float vb = sScreenHeight / 2;
-		float tl = 0.0f;
-		float tt = 0.0f;
-		float tr = float(sScreenWidth) / sCanvasTextureWidth;
-		float tb = float(sScreenHeight) / sCanvasTextureHeight;
-
-		LVERTEX vtx[4] = {
-			{ vl, vt, 0, D3DCOLOR_ARGB(255, 255, 255, 255), tl, tt },
-			{ vr, vt, 0, D3DCOLOR_ARGB(255, 255, 255, 255), tr, tt },
-			{ vl, vb, 0, D3DCOLOR_ARGB(255, 255, 255, 255), tl, tb },
-			{ vr, vb, 0, D3DCOLOR_ARGB(255, 255, 255, 255), tr, tb }
-		};
-
-
-		sD3DDevice->SetTexture(0, sCanvasTexture);
-		sD3DDevice->DrawPrimitiveUP(D3DPT_TRIANGLESTRIP, 2, vtx, sizeof(LVERTEX));
-		sD3DDevice->SetTexture(0, NULL);
-	}
-
-	EmoteDevice^ Emote::EmoteInit() {
-		IEmoteDevice__TYPE::InitParam initParam;
-		ZeroMemory(&initParam, sizeof(initParam));
-		initParam.d3dDevice = sD3DDevice;
-		IEmoteDevice__TYPE* sDevice = EmoteCreate__TYPE(initParam);
-		sEmoteDevice = sDevice;
-		device = gcnew EmoteDevice(sDevice);
-		EmotePlayers = gcnew Dictionary<String^, EmotePlayer^>();
-		return device;
-	}
-	EmoteDevice^ Emote::EmoteInit(IntPtr dxHandle) {
-		IEmoteDevice__TYPE::InitParam initParam;
-		ZeroMemory(&initParam, sizeof(initParam));
-		void* ptr = dxHandle.ToPointer();
-		sD3DDevice = (IDirect3DDevice9*)ptr;
-		initParam.d3dDevice = (LPDIRECT3DDEVICE9)ptr;
-		IEmoteDevice__TYPE* sDevice = EmoteCreate__TYPE(initParam);
-		sEmoteDevice = sDevice;
-		device = gcnew EmoteDevice(sDevice);
-		EmotePlayers = gcnew Dictionary<String^, EmotePlayer^>();
-		return device;
-	}
-
-
 	void Emote::OnDeviceLost()
 	{
 		if (sCanvasTexture != NULL)
@@ -544,8 +381,6 @@ namespace EmoteEngineNet {
 		}
 		device->OnDeviceLost();
 	}
-
-
 	void Emote::OnDeviceReset()
 	{
 		if (useD3DSurface)
@@ -581,6 +416,63 @@ namespace EmoteEngineNet {
 		}
 		D3DInitRenderState();
 	}
+#pragma endregion DirectX
+
+#pragma region CanvasTexture
+	void Emote::AttachCanvasTexture()
+	{
+		RequireCanvasTexture();
+
+		if (!sCanvasTexture)
+			return;
+
+		sD3DDevice->GetRenderTarget(0, &sBackBufferSurface);
+		LPDIRECT3DSURFACE9 surface;
+		sCanvasTexture->GetSurfaceLevel(0, &surface);
+		sD3DDevice->SetRenderTarget(0, surface);
+		surface->Release();
+		D3DVIEWPORT9 vp = { 0, 0, sScreenWidth, sScreenHeight, 0.0f, 1.0f };
+		sD3DDevice->SetViewport(&vp);
+		sD3DDevice->Clear(0, NULL, D3DCLEAR_TARGET, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, 0);
+	}
+
+	void Emote::DetachCanvasTexture()
+	{
+		if (!sCanvasTexture)
+			return;
+
+		useD3DSurface = false;
+
+		sD3DDevice->SetRenderTarget(0, sBackBufferSurface);
+		sBackBufferSurface->Release();
+	}
+
+	void Emote::DrawCanvasTexture()
+	{
+		if (!sCanvasTexture)
+			return;
+
+		float vl = -sScreenWidth / 2;
+		float vt = -sScreenHeight / 2;
+		float vr = sScreenWidth / 2;
+		float vb = sScreenHeight / 2;
+		float tl = 0.0f;
+		float tt = 0.0f;
+		float tr = float(sScreenWidth) / sCanvasTextureWidth;
+		float tb = float(sScreenHeight) / sCanvasTextureHeight;
+
+		LVERTEX vtx[4] = {
+			{ vl, vt, 0, D3DCOLOR_ARGB(255, 255, 255, 255), tl, tt },
+			{ vr, vt, 0, D3DCOLOR_ARGB(255, 255, 255, 255), tr, tt },
+			{ vl, vb, 0, D3DCOLOR_ARGB(255, 255, 255, 255), tl, tb },
+			{ vr, vb, 0, D3DCOLOR_ARGB(255, 255, 255, 255), tr, tb }
+		};
+
+
+		sD3DDevice->SetTexture(0, sCanvasTexture);
+		sD3DDevice->DrawPrimitiveUP(D3DPT_TRIANGLESTRIP, 2, vtx, sizeof(LVERTEX));
+		sD3DDevice->SetTexture(0, NULL);
+	}
 
 	void Emote::RequireCanvasTexture() {
 		if (sCanvasTexture == NULL)
@@ -591,7 +483,92 @@ namespace EmoteEngineNet {
 			sD3DDevice->CreateTexture(sCanvasTextureWidth, sCanvasTextureHeight, 1, 1, D3DFMT_A8R8G8B8, D3DPOOL_DEFAULT, p1, 0);
 		}
 	}
+#pragma endregion CanvasTexture
 
+#pragma region Add/Remove Player
+	EmotePlayer^ Emote::CreatePlayer(String^ name, String^ path)
+	{
+		Lock lock(EmotePlayers);
+		if (!EmotePlayers->ContainsKey(name))
+		{
+			EmotePlayer^ emotePlayer = device->CreatePlayer(path);
+			EmotePlayers->Add(name, emotePlayer);
+			return emotePlayer;
+		}
+		return EmotePlayers[name];
+	}
+	EmotePlayer^ Emote::CreatePlayer(String^ name, Stream^ stream)
+	{
+		Lock lock(EmotePlayers);
+		if (!EmotePlayers->ContainsKey(name))
+		{
+			EmotePlayer^ emotePlayer = device->CreatePlayer(stream);
+			EmotePlayers->Add(name, emotePlayer);
+			return emotePlayer;
+		}
+		return EmotePlayers[name];
+	}
+	void Emote::DeletePlayer(EmotePlayer^ player)
+	{
+		if (player != nullptr)
+		{
+			Lock lock(EmotePlayers);
+			if (EmotePlayers->ContainsValue(player))
+			{
+				List<String^>^ list = gcnew List<String^>();
+				Dictionary<String^, EmotePlayer^>::Enumerator^ enumerator = EmotePlayers->GetEnumerator();
+				if (enumerator->MoveNext())
+				{
+					do
+					{
+						KeyValuePair<String^, EmotePlayer^>^ current = enumerator->Current;
+						if (current->Value == player)
+						{
+							list->Add(current->Key);
+						}
+					} while (enumerator->MoveNext());
+				}
+				List<String^>::Enumerator^ enumerator2 = list->GetEnumerator();
+				if (enumerator2->MoveNext())
+				{
+					do
+					{
+						String^ current2 = enumerator2->Current;
+						EmotePlayers->Remove(current2);
+					} while (enumerator2->MoveNext());
+				}
+			}
+		}
+	}
+	void Emote::DeletePlayer(String^ player)
+	{
+		Lock lock(EmotePlayers);
+		if (EmotePlayers->ContainsKey(player))
+		{
+			EmotePlayer^ emotePlayer = EmotePlayers[player];
+			EmotePlayers->Remove(player);
+		}
+	}
+#pragma endregion Add/Remove Player
+
+#pragma region PlayerCollectionFunctions
+	void Emote::Draw()
+	{
+		Lock lock(EmotePlayers);
+		Dictionary<String^, EmotePlayer^>::ValueCollection::Enumerator^ enumerator = EmotePlayers->Values->GetEnumerator();
+		if (enumerator->MoveNext())
+		{
+			do
+			{
+				EmotePlayer^ current = enumerator->Current;
+				if (current != nullptr)
+				{
+					sEmoteDevice->OnRenderTarget(sCanvasTexture);
+					current->Render();
+				}
+			} while (enumerator->MoveNext());
+		}
+	}
 	void Emote::Show()
 	{
 		Dictionary<String^, EmotePlayer^>::ValueCollection::Enumerator^ enumerator = EmotePlayers->Values->GetEnumerator();
@@ -607,7 +584,6 @@ namespace EmoteEngineNet {
 			} while (enumerator->MoveNext());
 		}
 	}
-
 	void Emote::Skip()
 	{
 		Dictionary<String^, EmotePlayer^>::ValueCollection::Enumerator^ enumerator = EmotePlayers->Values->GetEnumerator();
@@ -623,7 +599,6 @@ namespace EmoteEngineNet {
 			} while (enumerator->MoveNext());
 		}
 	}
-
 	void Emote::Update(float frameCount)
 	{
 		Dictionary<String^, EmotePlayer^>::ValueCollection::Enumerator^ enumerator = EmotePlayers->Values->GetEnumerator();
@@ -639,6 +614,51 @@ namespace EmoteEngineNet {
 			} while (enumerator->MoveNext());
 		}
 	}
+#pragma endregion PlayerCollectionFunctions
+
+
+	void Emote::LoadEmoteEngine(String^ EnginePath)
+	{
+		if (EmoteCreate__TYPE == NULL)
+		{
+			IntPtr EnginePathPtr = System::Runtime::InteropServices::Marshal::StringToHGlobalUni(EnginePath);
+			ptrEmoteCreate__TYPE = LoadLibraryW((LPCWSTR)EnginePathPtr.ToPointer());
+			EmoteCreate__TYPE = (EmoteFactoryFunction__TYPE)GetProcAddress(ptrEmoteCreate__TYPE, (LPCSTR)("?EmoteCreate@@YAPAVIEmoteDevice@@ABUInitParam@1@@Z"));
+		}
+	}
+
+	void Emote::LoadEmoteEngine()
+	{
+		LoadEmoteEngine(gcnew String(L"emotedriver.dll"));
+	}
+
+
+	EmoteDevice^ Emote::EmoteInit() {
+		IEmoteDevice__TYPE::InitParam initParam;
+		ZeroMemory(&initParam, sizeof(initParam));
+		initParam.d3dDevice = sD3DDevice;
+		IEmoteDevice__TYPE* sDevice = EmoteCreate__TYPE(initParam);
+		sEmoteDevice = sDevice;
+		device = gcnew EmoteDevice(sDevice);
+		EmotePlayers = gcnew Dictionary<String^, EmotePlayer^>();
+		return device;
+	}
+	EmoteDevice^ Emote::EmoteInit(IntPtr dxHandle) {
+		IEmoteDevice__TYPE::InitParam initParam;
+		ZeroMemory(&initParam, sizeof(initParam));
+		void* ptr = dxHandle.ToPointer();
+		sD3DDevice = (IDirect3DDevice9*)ptr;
+		initParam.d3dDevice = (LPDIRECT3DDEVICE9)ptr;
+		IEmoteDevice__TYPE* sDevice = EmoteCreate__TYPE(initParam);
+		sEmoteDevice = sDevice;
+		device = gcnew EmoteDevice(sDevice);
+		EmotePlayers = gcnew Dictionary<String^, EmotePlayer^>();
+		return device;
+	}
+
+
+
+
 
 	int Emote::D3DCanvasTexture::get()
 	{

@@ -22,12 +22,10 @@ typedef ULONG emote_uint32_t;
 typedef const emote_uint8_t * emote_image_ptr_t;
 
 
-
-
-class /*_EXPORT*/ IEmoteDevice_3_52_NEKO0
+class /*_EXPORT*/ IEmoteDevice_NEKO0 //Based on 3_52?
 {
 public:
-	virtual ~IEmoteDevice_3_52_NEKO0(void) {};
+	virtual ~IEmoteDevice_NEKO0(void) {};
 
 	virtual emote_uint32_t AddRef(void) = 0;
 	virtual emote_uint32_t Release(void) = 0;
@@ -68,8 +66,8 @@ public:
 	virtual void SetMaskRegionClipping(bool state) = 0;
 	virtual bool GetMaskRegionClipping(void) const = 0;
 
-	virtual void CreatePlayer(emote_image_ptr_t emoteObjectImage, emote_uint32_t emoteObjectSize, class IEmotePlayer_3_52_NEKO0 **player) = 0;
-	virtual void CreatePlayer(emote_uint32_t emoteObjectNum, const emote_image_ptr_t *emoteObjectImage, const emote_uint32_t *emoteObjectSize, class IEmotePlayer_3_52_NEKO0 **player) = 0;
+	virtual void CreatePlayer(emote_image_ptr_t emoteObjectImage, emote_uint32_t emoteObjectSize, class IEmotePlayer_NEKO0 **player) = 0;
+	virtual void CreatePlayer(emote_uint32_t emoteObjectNum, const emote_image_ptr_t *emoteObjectImage, const emote_uint32_t *emoteObjectSize, class IEmotePlayer_NEKO0 **player) = 0;
 
 	virtual shader_model_t GetAvailableShaderModel(void) const = 0;
 	virtual void SetShaderModel(shader_model_t model) = 0;
@@ -92,9 +90,7 @@ public:
 	virtual void OnDeviceLost(void) = 0;
 	virtual void OnRenderTarget(LPDIRECT3DTEXTURE9 renderTargetTexture) = 0;
 };
-
-
-class /*_EXPORT*/ IEmotePlayer_3_52_NEKO0
+class /*_EXPORT*/ IEmotePlayer_NEKO0 //Based on 3_52?
 {
 public:
 	enum timeline_play_flags_t {
@@ -102,14 +98,14 @@ public:
 		TIMELINE_PLAY_DIFFERENCE = 1 << 1
 	};
 
-	virtual ~IEmotePlayer_3_52_NEKO0(void) {}
+	virtual ~IEmotePlayer_NEKO0(void) {}
 
 	virtual emote_uint32_t AddRef(void) = 0;
 	virtual emote_uint32_t Release(void) = 0;
 	virtual emote_uint32_t RefCount(void) const = 0;
 
-	virtual IEmotePlayer_3_52_NEKO0 *Clone(void) = 0;
-	virtual void AssignState(IEmotePlayer_3_52_NEKO0 *another) = 0;
+	virtual IEmotePlayer_NEKO0 *Clone(void) = 0;
+	virtual void AssignState(IEmotePlayer_NEKO0 *another) = 0;
 
 	virtual void Show(void) = 0;
 	virtual void Hide(void) = 0;
@@ -161,7 +157,7 @@ public:
 	virtual void StopWind(void) = 0;
 
 	//ADDED: only for nekopara version E-mote
-	virtual void UnknownFunc(void) = 0;
+	virtual int UnknownFunc(int v1, float v2, float v3) const = 0;
 
 	virtual emote_uint32_t CountMainTimelines(void) const = 0;
 	virtual const char *GetMainTimelineLabelAt(emote_uint32_t index) const = 0;
@@ -188,15 +184,6 @@ public:
 	virtual void Render(void) = 0;
 
 };
-
-
-
-
-
-
-
-
-
 
 class /*_EXPORT*/ IEmoteDevice_3_52
 {
@@ -266,8 +253,6 @@ public:
   virtual void OnDeviceLost(void) = 0;
   virtual void OnRenderTarget(LPDIRECT3DTEXTURE9 renderTargetTexture) = 0;
 };
-
-
 class /*_EXPORT*/ IEmotePlayer_3_52
 {
 public:
@@ -426,8 +411,6 @@ public:
 	virtual void OnDeviceLost(void) = 0;
 	virtual void OnRenderTarget(LPDIRECT3DTEXTURE9 renderTargetTexture) = 0;
 };
-
-
 class /*_EXPORT*/ IEmotePlayer_3_4
 {
 public:
@@ -512,10 +495,7 @@ public:
 	virtual void Render(void) = 0;
 };
 
-
-
-
-class /*_EXPORT*/ IEmoteDevice_3_4_NEKO
+class /*_EXPORT*/ IEmoteDevice_NEKO1 //Based on 3_4?
 {
 public:
 	virtual emote_uint32_t AddRef(void) = 0;
@@ -575,15 +555,13 @@ public:
 
 	virtual void SetMaxTextureSize(emote_uint32_t width, emote_uint32_t height) = 0;
 
-	virtual void CreatePlayer(const emote_uint8_t *emoteObjectImage, emote_uint32_t emoteObjectSize, class IEmotePlayer_3_4_NEKO **player) = 0;
-	virtual void CreatePlayer(emote_uint32_t emoteObjectNum, const emote_uint8_t **emoteObjectImage, const emote_uint32_t *emoteObjectSize, class IEmotePlayer_3_4_NEKO **player) = 0;
+	virtual void CreatePlayer(const emote_uint8_t *emoteObjectImage, emote_uint32_t emoteObjectSize, class IEmotePlayer_NEKO1 **player) = 0;
+	virtual void CreatePlayer(emote_uint32_t emoteObjectNum, const emote_uint8_t **emoteObjectImage, const emote_uint32_t *emoteObjectSize, class IEmotePlayer_NEKO1 **player) = 0;
 
 	virtual void OnDeviceLost(void) = 0;
 	virtual void OnRenderTarget(LPDIRECT3DTEXTURE9 renderTargetTexture) = 0;
 };
-
-
-class /*_EXPORT*/ IEmotePlayer_3_4_NEKO
+class /*_EXPORT*/ IEmotePlayer_NEKO1 //Based on 3_4?
 {
 public:
 	enum timeline_play_flags_t {
@@ -594,8 +572,8 @@ public:
 	virtual emote_uint32_t AddRef(void) = 0;
 	virtual emote_uint32_t Release(void) = 0;
 
-	virtual IEmotePlayer_3_4_NEKO *Clone(void) = 0;
-	virtual void AssignState(IEmotePlayer_3_4_NEKO *another) = 0;
+	virtual IEmotePlayer_NEKO1 *Clone(void) = 0;
+	virtual void AssignState(IEmotePlayer_NEKO1 *another) = 0;
 
 	virtual void Show(void) = 0;
 	virtual void Hide(void) = 0;
@@ -670,8 +648,6 @@ public:
 	virtual void Render(void) = 0;
 };
 
-
-
 //typedef IEmoteDevice* LPEMOTEDEVICE;
 //typedef IEmoteDevice* PEMOTEDEVICE;
 
@@ -689,11 +665,11 @@ static EmoteFactoryFunction_3_52 EmoteCreate_3_52;
 typedef IEmoteDevice_3_4*(WINAPI *EmoteFactoryFunction_3_4)(const IEmoteDevice_3_4::InitParam &param);
 static EmoteFactoryFunction_3_4 EmoteCreate_3_4;
 
-typedef IEmoteDevice_3_4_NEKO*(WINAPI *EmoteFactoryFunction_3_4_NEKO)(const IEmoteDevice_3_4_NEKO::InitParam &param);
-static EmoteFactoryFunction_3_4_NEKO EmoteCreate_3_4_NEKO;
+typedef IEmoteDevice_NEKO1*(WINAPI *EmoteFactoryFunction_NEKO1)(const IEmoteDevice_NEKO1::InitParam &param);
+static EmoteFactoryFunction_NEKO1 EmoteCreate_NEKO1;
 
-
-
+typedef IEmoteDevice_NEKO0*(WINAPI *EmoteFactoryFunction_NEKO0)(const IEmoteDevice_NEKO0::InitParam &param);
+static EmoteFactoryFunction_NEKO0 EmoteCreate_NEKO0;
 
 
 

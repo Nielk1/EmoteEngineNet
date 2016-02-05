@@ -14,7 +14,6 @@ namespace EmoteEngineNet {
 		return device->AddRef();
 	}
 
-	// TODO: Create a version that takes a byte array directly for the file
 	EmotePlayer^ EmoteDevice::CreatePlayer(String^ path)
 	{
 		if (!File::Exists(path))
@@ -42,6 +41,41 @@ namespace EmoteEngineNet {
 		return returnPlayer;
 	}
 
+	EmotePlayer^ EmoteDevice::CreatePlayer(Stream^ stream)
+	{
+		DWORD fileSize = stream->Length;
+		//Console::WriteLine(stream->Length);
+		BYTE* buf = new BYTE[fileSize];
+
+		CopyStreamToNativePtr(stream, buf);
+
+		if (backing_store__UseTextureFilter && backing_store__TextureFilter != nullptr)
+		{
+			EmoteFilterTexture(buf, fileSize, (FP_EMOTE_FILTER_FUNC)(Marshal::GetFunctionPointerForDelegate(backing_store__TextureFilter).ToPointer()));
+		}
+		IEmotePlayer__TYPE* player;
+		device->CreatePlayer(buf, fileSize, &player);
+		EmotePlayer^ returnPlayer = gcnew EmotePlayer(player);
+		delete buf;
+		return returnPlayer;
+	}
+
+	void EmoteDevice::CopyStreamToNativePtr(Stream^ src, unsigned char* dst)
+	{
+		// Assuming we want to start the copy at the beginning of src
+		src->Seek(0, SeekOrigin::Begin);
+
+		// Create an UnmanagedMemoryStream on top of the destination
+		// with an appropriate size and capacity (We assume the buffer is
+		// is sized to the source data in this function!)
+		UnmanagedMemoryStream target(dst, src->Length, src->Length, FileAccess::Write);
+
+		// Copy to your heart's content!
+		src->CopyTo(%target);
+
+		// We made the UnmanagedMemoryStream local so that we wouldn't have
+		// to explicitly Dispose() of it.
+	}
 
 	AlphaOp EmoteDevice::GetAlphaOp()
 	{
