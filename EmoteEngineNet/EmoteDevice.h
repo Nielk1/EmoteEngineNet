@@ -14,6 +14,7 @@ using namespace System::Runtime::CompilerServices;
 
 namespace EmoteEngineNet {
 	ref class EmotePlayer;
+	ref class Emote;
 
 	public ref class EmoteDevice
 	{
@@ -46,7 +47,7 @@ namespace EmoteEngineNet {
 		void SetShaderModel(ShaderModel shaderModel);
 
 	internal:
-		EmoteDevice(::IEmoteDevice__TYPE* sDevice);
+		EmoteDevice(::IEmoteDevice__TYPE* sDevice, Emote^ _emote);
 		void OnRenderTarget(IDirect3DTexture9* renderTargetTexture);
 		EmotePlayer ^CreatePlayer(String^ path);
 		EmotePlayer ^CreatePlayer(Stream^ stream);
@@ -75,5 +76,7 @@ namespace EmoteEngineNet {
 		TextureFilterFunction^ backing_store__TextureFilter;
 		bool backing_store__UseTextureFilter;
 		IEmoteDevice__TYPE* device = NULL;
+
+		Emote^ emote;
 	};
 }

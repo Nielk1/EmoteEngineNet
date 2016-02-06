@@ -639,7 +639,7 @@ namespace EmoteEngineNet {
 		initParam.d3dDevice = sD3DDevice;
 		IEmoteDevice__TYPE* sDevice = EmoteCreate__TYPE(initParam);
 		sEmoteDevice = sDevice;
-		device = gcnew EmoteDevice(sDevice);
+		device = gcnew EmoteDevice(sDevice, this);
 		EmotePlayers = gcnew Dictionary<String^, EmotePlayer^>();
 		return device;
 	}
@@ -651,7 +651,7 @@ namespace EmoteEngineNet {
 		initParam.d3dDevice = (LPDIRECT3DDEVICE9)ptr;
 		IEmoteDevice__TYPE* sDevice = EmoteCreate__TYPE(initParam);
 		sEmoteDevice = sDevice;
-		device = gcnew EmoteDevice(sDevice);
+		device = gcnew EmoteDevice(sDevice, this);
 		EmotePlayers = gcnew Dictionary<String^, EmotePlayer^>();
 		return device;
 	}

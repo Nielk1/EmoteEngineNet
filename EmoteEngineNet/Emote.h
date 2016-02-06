@@ -154,5 +154,14 @@ namespace EmoteEngineNet {
 		IEmoteDevice__TYPE* sEmoteDevice;
 	
 		bool transparent = false;
+
+	public:
+		EmoteFactoryFunction_3_52 EmoteCreate_3_52;
+		EmoteFactoryFunction_3_4 EmoteCreate_3_4;
+		EmoteFactoryFunction_NEKO1 EmoteCreate_NEKO1;
+		EmoteFactoryFunction_NEKO0 EmoteCreate_NEKO0;
+		EmoteFactoryFunction__TYPE EmoteCreate__TYPE;
+
+		EmoteFilterTextureFunction EmoteFilterTexture;
 };
 }

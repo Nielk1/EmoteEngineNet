@@ -658,25 +658,11 @@ public:
 
 /*_EXPORT IEmoteDevice *EmoteCreate(const IEmoteDevice::InitParam &param);*/
 
-
 typedef IEmoteDevice_3_52*(WINAPI *EmoteFactoryFunction_3_52)(const IEmoteDevice_3_52::InitParam &param);
-static EmoteFactoryFunction_3_52 EmoteCreate_3_52;
-
 typedef IEmoteDevice_3_4*(WINAPI *EmoteFactoryFunction_3_4)(const IEmoteDevice_3_4::InitParam &param);
-static EmoteFactoryFunction_3_4 EmoteCreate_3_4;
-
 typedef IEmoteDevice_NEKO1*(WINAPI *EmoteFactoryFunction_NEKO1)(const IEmoteDevice_NEKO1::InitParam &param);
-static EmoteFactoryFunction_NEKO1 EmoteCreate_NEKO1;
-
 typedef IEmoteDevice_NEKO0*(WINAPI *EmoteFactoryFunction_NEKO0)(const IEmoteDevice_NEKO0::InitParam &param);
-static EmoteFactoryFunction_NEKO0 EmoteCreate_NEKO0;
-
-
-
 typedef IEmoteDevice__TYPE*(WINAPI *EmoteFactoryFunction__TYPE)(const IEmoteDevice__TYPE::InitParam &param);
-static EmoteFactoryFunction__TYPE EmoteCreate__TYPE;
-
-
 
 //E-mote3.4 ?
 //E-mote3.52
@@ -686,7 +672,6 @@ typedef void(*FP_EMOTE_FILTER_FUNC)(emote_uint8_t *image, emote_uint32_t imageSi
 
 
 typedef void(WINAPI *EmoteFilterTextureFunction)(emote_uint8_t *image, emote_uint32_t imageSize, FP_EMOTE_FILTER_FUNC filterFunc);
-static EmoteFilterTextureFunction EmoteFilterTexture;
 
 
 #endif // __EMOTE_DRIVER_H

@@ -4,10 +4,12 @@
 #include <assert.h>
 namespace EmoteEngineNet {
 
-	EmoteDevice::EmoteDevice(::IEmoteDevice__TYPE* sDevice)
+	EmoteDevice::EmoteDevice(::IEmoteDevice__TYPE* sDevice, Emote^ _emote)
 	{
 		device = sDevice;
 		backing_store__UseTextureFilter = false;
+
+		emote = _emote;
 	}
 
 	uint32_t EmoteDevice::AddRef() {
@@ -32,7 +34,7 @@ namespace EmoteEngineNet {
 		CloseHandle(hFile);
 		if (backing_store__UseTextureFilter && backing_store__TextureFilter != nullptr)
 		{
-			EmoteFilterTexture(buf, fileSize, (FP_EMOTE_FILTER_FUNC)(Marshal::GetFunctionPointerForDelegate(backing_store__TextureFilter).ToPointer()));
+			emote->EmoteFilterTexture(buf, fileSize, (FP_EMOTE_FILTER_FUNC)(Marshal::GetFunctionPointerForDelegate(backing_store__TextureFilter).ToPointer()));
 		}
 		IEmotePlayer__TYPE* player;
 		device->CreatePlayer(buf, fileSize, &player);
@@ -51,7 +53,7 @@ namespace EmoteEngineNet {
 
 		if (backing_store__UseTextureFilter && backing_store__TextureFilter != nullptr)
 		{
-			EmoteFilterTexture(buf, fileSize, (FP_EMOTE_FILTER_FUNC)(Marshal::GetFunctionPointerForDelegate(backing_store__TextureFilter).ToPointer()));
+			emote->EmoteFilterTexture(buf, fileSize, (FP_EMOTE_FILTER_FUNC)(Marshal::GetFunctionPointerForDelegate(backing_store__TextureFilter).ToPointer()));
 		}
 		IEmotePlayer__TYPE* player;
 		device->CreatePlayer(buf, fileSize, &player);
