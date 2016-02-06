@@ -143,6 +143,7 @@
     <ClInclude Include="Core.h" />
     <ClInclude Include="Emote.h" />
     <ClInclude Include="EmoteDevice.h" />
+    <ClInclude Include="EmoteDriverAdapter.h" />
     <ClInclude Include="EmotePlayer.h" />
     <ClInclude Include="Enums.h" />
     <ClInclude Include="iemote.h" />

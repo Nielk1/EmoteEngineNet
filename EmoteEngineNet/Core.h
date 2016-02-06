@@ -1,5 +1,6 @@
 #pragma once
 
+//http://stackoverflow.com/questions/27096103/managed-directx-sharpdx-slimdx-working-without-installer
 
 //#pragma comment(lib,"emotedriver.lib")
 
@@ -27,7 +28,7 @@ static int sRightMouseDragging;
 
 
 
-static HINSTANCE__* ptrEmoteCreate__TYPE;
+//static HINSTANCE__* ptrEmoteCreate__TYPE;
 
 
 static unsigned int GetVertexProcessingCaps()

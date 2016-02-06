@@ -8,6 +8,7 @@
 #include "Enums.h"
 #include "Core.h"
 #include "D3DX9Math.h"
+#include "EmoteDriverAdapter.h"
 
 using namespace System;
 using namespace System::Collections::Generic;
@@ -16,6 +17,7 @@ using namespace System::Runtime::InteropServices;
 namespace EmoteEngineNet {
 	ref class EmoteDevice;
 	ref class EmotePlayer;
+	ref class EmoteDriverAdapater;
 
 	public ref class Emote
 	{
@@ -160,8 +162,11 @@ namespace EmoteEngineNet {
 		EmoteFactoryFunction_3_4 EmoteCreate_3_4;
 		EmoteFactoryFunction_NEKO1 EmoteCreate_NEKO1;
 		EmoteFactoryFunction_NEKO0 EmoteCreate_NEKO0;
-		EmoteFactoryFunction__TYPE EmoteCreate__TYPE;
+		//EmoteFactoryFunction__TYPE EmoteCreate__TYPE;
 
 		EmoteFilterTextureFunction EmoteFilterTexture;
+
+	private:
+		Adapter::EmoteDriverBase^ driver;
 };
 }

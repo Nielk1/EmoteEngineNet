@@ -49,8 +49,14 @@ namespace EmoteEngineNet {
 			device = nullptr;
 		}
 
-		if (ptrEmoteCreate__TYPE != NULL)
-			FreeLibrary(ptrEmoteCreate__TYPE);
+		//if (ptrEmoteCreate__TYPE != NULL)
+		//	FreeLibrary(ptrEmoteCreate__TYPE);
+
+		//if (driver != nullptr)
+		//	driver->FreeLibrary();
+
+		if (driver != nullptr)
+			driver = nullptr;
 	}
 #pragma endregion Construction/Destruction
 
@@ -619,11 +625,15 @@ namespace EmoteEngineNet {
 
 	void Emote::LoadEmoteEngine(String^ EnginePath)
 	{
-		if (EmoteCreate__TYPE == NULL)
+		//if (EmoteCreate__TYPE == NULL)
+		if(driver == nullptr)
 		{
-			IntPtr EnginePathPtr = System::Runtime::InteropServices::Marshal::StringToHGlobalUni(EnginePath);
-			ptrEmoteCreate__TYPE = LoadLibraryW((LPCWSTR)EnginePathPtr.ToPointer());
-			EmoteCreate__TYPE = (EmoteFactoryFunction__TYPE)GetProcAddress(ptrEmoteCreate__TYPE, (LPCSTR)("?EmoteCreate@@YAPAVIEmoteDevice@@ABUInitParam@1@@Z"));
+			//IntPtr EnginePathPtr = System::Runtime::InteropServices::Marshal::StringToHGlobalUni(EnginePath);
+			//ptrEmoteCreate__TYPE = LoadLibraryW((LPCWSTR)EnginePathPtr.ToPointer());
+			//EmoteCreate__TYPE = (EmoteFactoryFunction__TYPE)GetProcAddress(ptrEmoteCreate__TYPE, (LPCSTR)("?EmoteCreate@@YAPAVIEmoteDevice@@ABUInitParam@1@@Z"));
+			
+			//driver = gcnew EmoteDriverAdapater(ptrEmoteCreate__TYPE);
+			driver = gcnew Adapter::EmoteDriverBase(EnginePath);
 		}
 	}
 
@@ -634,22 +644,26 @@ namespace EmoteEngineNet {
 
 
 	EmoteDevice^ Emote::EmoteInit() {
-		IEmoteDevice__TYPE::InitParam initParam;
-		ZeroMemory(&initParam, sizeof(initParam));
-		initParam.d3dDevice = sD3DDevice;
-		IEmoteDevice__TYPE* sDevice = EmoteCreate__TYPE(initParam);
+		//IEmoteDevice__TYPE::InitParam initParam;
+		//ZeroMemory(&initParam, sizeof(initParam));
+		//initParam.d3dDevice = sD3DDevice;
+		//IEmoteDevice__TYPE* sDevice = EmoteCreate__TYPE(initParam);
+		//IEmoteDevice__TYPE* sDevice = driver->EmoteCreate(initParam);
+		IEmoteDevice__TYPE* sDevice = driver->EmoteCreate(sD3DDevice);
 		sEmoteDevice = sDevice;
 		device = gcnew EmoteDevice(sDevice, this);
 		EmotePlayers = gcnew Dictionary<String^, EmotePlayer^>();
 		return device;
 	}
 	EmoteDevice^ Emote::EmoteInit(IntPtr dxHandle) {
-		IEmoteDevice__TYPE::InitParam initParam;
-		ZeroMemory(&initParam, sizeof(initParam));
+		//IEmoteDevice__TYPE::InitParam initParam;
+		//ZeroMemory(&initParam, sizeof(initParam));
 		void* ptr = dxHandle.ToPointer();
 		sD3DDevice = (IDirect3DDevice9*)ptr;
-		initParam.d3dDevice = (LPDIRECT3DDEVICE9)ptr;
-		IEmoteDevice__TYPE* sDevice = EmoteCreate__TYPE(initParam);
+		//initParam.d3dDevice = (LPDIRECT3DDEVICE9)ptr;
+		//IEmoteDevice__TYPE* sDevice = EmoteCreate__TYPE(initParam);
+		//IEmoteDevice__TYPE* sDevice = driver->EmoteCreate(initParam);
+		IEmoteDevice__TYPE* sDevice = driver->EmoteCreate((LPDIRECT3DDEVICE9)ptr);
 		sEmoteDevice = sDevice;
 		device = gcnew EmoteDevice(sDevice, this);
 		EmotePlayers = gcnew Dictionary<String^, EmotePlayer^>();
