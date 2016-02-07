@@ -8,6 +8,10 @@
 #include "Enums.h"
 #include "Core.h"
 #include "D3DX9Math.h"
+#include "EmoteDriverAdapter3_4.h"
+#include "EmoteDriverAdapterNEKO1.h"
+#include "EmoteDriverAdapter3_52.h"
+#include "EmoteDriverAdapterNEKO0.h"
 #include "EmoteDriverAdapter.h"
 
 using namespace System;
@@ -25,7 +29,7 @@ namespace EmoteEngineNet {
 #pragma region Construction/Destruction
 	public:
 		Emote(IntPtr dxHandle);
-		Emote(IntPtr dxHandle, String^ EnginePath);
+		Emote(IntPtr dxHandle, String^ EnginePath, InterfaceVersion Version);
 		Emote(IntPtr handle, bool useD3DSurface);
 		Emote(IntPtr handle, int width, int height);
 		Emote(IntPtr handle, int width, int height, bool useD3DSurface);
@@ -82,7 +86,7 @@ namespace EmoteEngineNet {
 
 
 	public:
-		void Emote::LoadEmoteEngine(String^ EnginePath);
+		void Emote::LoadEmoteEngine(String^ EnginePath, InterfaceVersion Version);
 		void LoadEmoteEngine();
 		EmoteDevice^ EmoteInit();
 	private:

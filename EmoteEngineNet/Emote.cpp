@@ -8,8 +8,8 @@ namespace EmoteEngineNet {
 		LoadEmoteEngine();
 		EmoteInit(dxHandle);
 	}
-	Emote::Emote(IntPtr dxHandle, String^ EnginePath) {
-		LoadEmoteEngine(EnginePath);
+	Emote::Emote(IntPtr dxHandle, String^ EnginePath, InterfaceVersion Version) {
+		LoadEmoteEngine(EnginePath, Version);
 		EmoteInit(dxHandle);
 	}
 	Emote::Emote(IntPtr handle, bool useD3DSurface) {
@@ -623,7 +623,7 @@ namespace EmoteEngineNet {
 #pragma endregion PlayerCollectionFunctions
 
 
-	void Emote::LoadEmoteEngine(String^ EnginePath)
+	void Emote::LoadEmoteEngine(String^ EnginePath, InterfaceVersion Version)
 	{
 		//if (EmoteCreate__TYPE == NULL)
 		if(driver == nullptr)
@@ -633,13 +633,20 @@ namespace EmoteEngineNet {
 			//EmoteCreate__TYPE = (EmoteFactoryFunction__TYPE)GetProcAddress(ptrEmoteCreate__TYPE, (LPCSTR)("?EmoteCreate@@YAPAVIEmoteDevice@@ABUInitParam@1@@Z"));
 			
 			//driver = gcnew EmoteDriverAdapater(ptrEmoteCreate__TYPE);
-			driver = gcnew Adapter::EmoteDriverBase(EnginePath);
+
+			switch (Version)
+			{
+			case InterfaceVersion::v3_4 : driver = gcnew Adapter::EmoteDriver3_4  (EnginePath); break;
+			case InterfaceVersion::NEKO1: driver = gcnew Adapter::EmoteDriverNEKO1(EnginePath); break;
+			case InterfaceVersion::v3_52: driver = gcnew Adapter::EmoteDriver3_52 (EnginePath); break;
+			case InterfaceVersion::NEKO0: driver = gcnew Adapter::EmoteDriverNEKO0(EnginePath); break;
+			}
 		}
 	}
 
 	void Emote::LoadEmoteEngine()
 	{
-		LoadEmoteEngine(gcnew String(L"emotedriver.dll"));
+		LoadEmoteEngine(gcnew String(L"emotedriver.dll"), InterfaceVersion::v3_52);
 	}
 
 

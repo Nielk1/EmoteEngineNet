@@ -29,4 +29,12 @@ namespace EmoteEngineNet
 		TIMELINE_PLAY_PARALLEL = 1u,
 		TIMELINE_PLAY_DIFFERENCE = 2u
 	};
+
+	public enum class InterfaceVersion : uint32_t
+	{
+		v3_4,
+		NEKO1,
+		v3_52,
+		NEKO0,
+	};
 }

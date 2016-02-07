@@ -144,7 +144,10 @@
     <ClInclude Include="Emote.h" />
     <ClInclude Include="EmoteDevice.h" />
     <ClInclude Include="EmoteDriverAdapter.h" />
+    <ClInclude Include="EmoteDriverAdapter3_4.h" />
+    <ClInclude Include="EmoteDriverAdapter3_52.h" />
     <ClInclude Include="EmoteDriverAdapterNEKO0.h" />
+    <ClInclude Include="EmoteDriverAdapterNEKO1.h" />
     <ClInclude Include="EmotePlayer.h" />
     <ClInclude Include="Enums.h" />
     <ClInclude Include="iemote.h" />

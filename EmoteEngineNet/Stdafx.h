@@ -12,8 +12,8 @@
 //#define IEmoteDevice__TYPE IEmoteDevice_3_4_NEKO
 //#define IEmotePlayer__TYPE IEmotePlayer_3_4_NEKO
 
-#define IEmoteDevice__TYPE IEmoteDevice_NEKO0
-#define IEmotePlayer__TYPE IEmotePlayer_NEKO0
+//#define IEmoteDevice__TYPE IEmoteDevice_NEKO0
+//#define IEmotePlayer__TYPE IEmotePlayer_NEKO0
 
 //#define IEmoteDevice__TYPE IEmoteDevice_3_52
 //#define IEmotePlayer__TYPE IEmotePlayer_3_52

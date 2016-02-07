@@ -662,7 +662,7 @@ typedef IEmoteDevice_3_52*(WINAPI *EmoteFactoryFunction_3_52)(const IEmoteDevice
 typedef IEmoteDevice_3_4*(WINAPI *EmoteFactoryFunction_3_4)(const IEmoteDevice_3_4::InitParam &param);
 typedef IEmoteDevice_NEKO1*(WINAPI *EmoteFactoryFunction_NEKO1)(const IEmoteDevice_NEKO1::InitParam &param);
 typedef IEmoteDevice_NEKO0*(WINAPI *EmoteFactoryFunction_NEKO0)(const IEmoteDevice_NEKO0::InitParam &param);
-typedef IEmoteDevice__TYPE*(WINAPI *EmoteFactoryFunction__TYPE)(const IEmoteDevice__TYPE::InitParam &param);
+//typedef IEmoteDevice__TYPE*(WINAPI *EmoteFactoryFunction__TYPE)(const IEmoteDevice__TYPE::InitParam &param);
 
 //E-mote3.4 ?
 //E-mote3.52
