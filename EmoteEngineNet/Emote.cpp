@@ -649,7 +649,8 @@ namespace EmoteEngineNet {
 		//initParam.d3dDevice = sD3DDevice;
 		//IEmoteDevice__TYPE* sDevice = EmoteCreate__TYPE(initParam);
 		//IEmoteDevice__TYPE* sDevice = driver->EmoteCreate(initParam);
-		IEmoteDevice__TYPE* sDevice = driver->EmoteCreate(sD3DDevice);
+		//IEmoteDevice__TYPE* sDevice = driver->EmoteCreate(sD3DDevice);
+		Adapter::EmoteDeviceBase^ sDevice = driver->EmoteCreate(sD3DDevice);
 		sEmoteDevice = sDevice;
 		device = gcnew EmoteDevice(sDevice, this);
 		EmotePlayers = gcnew Dictionary<String^, EmotePlayer^>();
@@ -663,7 +664,8 @@ namespace EmoteEngineNet {
 		//initParam.d3dDevice = (LPDIRECT3DDEVICE9)ptr;
 		//IEmoteDevice__TYPE* sDevice = EmoteCreate__TYPE(initParam);
 		//IEmoteDevice__TYPE* sDevice = driver->EmoteCreate(initParam);
-		IEmoteDevice__TYPE* sDevice = driver->EmoteCreate((LPDIRECT3DDEVICE9)ptr);
+		//IEmoteDevice__TYPE* sDevice = driver->EmoteCreate((LPDIRECT3DDEVICE9)ptr);
+		Adapter::EmoteDeviceBase^ sDevice = driver->EmoteCreate((LPDIRECT3DDEVICE9)ptr);
 		sEmoteDevice = sDevice;
 		device = gcnew EmoteDevice(sDevice, this);
 		EmotePlayers = gcnew Dictionary<String^, EmotePlayer^>();

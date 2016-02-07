@@ -27,6 +27,10 @@ static int sPrevMouseY;
 static int sRightMouseDragging;
 
 
+static byte nulString = '\0';
+
+static const float MSTOF60THS = 60.0f / 1000.0f;
+static const float F60THSTOMS = 1000.0f / 60.0f;
 
 //static HINSTANCE__* ptrEmoteCreate__TYPE;
 

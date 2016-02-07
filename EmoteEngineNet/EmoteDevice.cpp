@@ -1,10 +1,12 @@
 #include "stdafx.h"
 
+#include "EmoteDriverAdapter.h"
 #include "EmoteDevice.h"
 #include <assert.h>
 namespace EmoteEngineNet {
 
-	EmoteDevice::EmoteDevice(::IEmoteDevice__TYPE* sDevice, Emote^ _emote)
+	//EmoteDevice::EmoteDevice(::IEmoteDevice__TYPE* sDevice, Emote^ _emote)
+	EmoteDevice::EmoteDevice(Adapter::EmoteDeviceBase^ sDevice, Emote^ _emote)
 	{
 		device = sDevice;
 		backing_store__UseTextureFilter = false;
@@ -36,8 +38,9 @@ namespace EmoteEngineNet {
 		{
 			emote->EmoteFilterTexture(buf, fileSize, (FP_EMOTE_FILTER_FUNC)(Marshal::GetFunctionPointerForDelegate(backing_store__TextureFilter).ToPointer()));
 		}
-		IEmotePlayer__TYPE* player;
-		device->CreatePlayer(buf, fileSize, &player);
+		//IEmotePlayer__TYPE* player;
+		//device->CreatePlayer(buf, fileSize, &player);
+		Adapter::EmotePlayerBase^ player = device->CreatePlayer(buf, fileSize);
 		EmotePlayer^ returnPlayer = gcnew EmotePlayer(player);
 		delete buf;
 		return returnPlayer;
@@ -55,8 +58,9 @@ namespace EmoteEngineNet {
 		{
 			emote->EmoteFilterTexture(buf, fileSize, (FP_EMOTE_FILTER_FUNC)(Marshal::GetFunctionPointerForDelegate(backing_store__TextureFilter).ToPointer()));
 		}
-		IEmotePlayer__TYPE* player;
-		device->CreatePlayer(buf, fileSize, &player);
+		//IEmotePlayer__TYPE* player;
+		//device->CreatePlayer(buf, fileSize, &player);
+		Adapter::EmotePlayerBase^ player = device->CreatePlayer(buf, fileSize);
 		EmotePlayer^ returnPlayer = gcnew EmotePlayer(player);
 		delete buf;
 		return returnPlayer;
@@ -136,12 +140,12 @@ namespace EmoteEngineNet {
 
 	void EmoteDevice::SetAlphaOp(AlphaOp op)
 	{
-		device->SetAlphaOp(static_cast<IEmoteDevice__TYPE::alpha_op_t>(op));
+		device->SetAlphaOp(op);
 	}
 
 	void EmoteDevice::SetMaskMode(MaskMode mask)
 	{
-		device->SetMaskMode(static_cast<IEmoteDevice__TYPE::mask_mode_t>(mask));
+		device->SetMaskMode(mask);
 	}
 
 	void EmoteDevice::SetMaskRegionClipping(bool state)
@@ -171,20 +175,21 @@ namespace EmoteEngineNet {
 
 	void EmoteDevice::SetShaderModel(ShaderModel shaderModel)
 	{
-		device->SetShaderModel(static_cast<IEmoteDevice__TYPE::shader_model_t>(shaderModel));
+		device->SetShaderModel(shaderModel);
 	}
 
 	EmoteDevice::~EmoteDevice()
 	{
-		if (device != NULL)
+		//if (device != NULL)
+		if (device != nullptr)
 		{
 			device->Release();
 		}
 	}
 
-	IEmoteDevice__TYPE* EmoteDevice::NativeDevice::get() {
-		return device;
-	}
+	//IEmoteDevice__TYPE* EmoteDevice::NativeDevice::get() {
+	//	return device;
+	//}
 
 	TextureFilterFunction^ EmoteDevice::TextureFilter::get()
 	{

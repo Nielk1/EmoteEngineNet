@@ -2,9 +2,10 @@
 #include "EmotePlayer.h"
 
 namespace EmoteEngineNet {
-	EmotePlayer::EmotePlayer(IEmotePlayer__TYPE* player)
+	//EmotePlayer::EmotePlayer(IEmotePlayer__TYPE* player)
+	EmotePlayer::EmotePlayer(Adapter::EmotePlayerBase^ player)
 	{
-		context = gcnew marshal_context();
+		//context = gcnew marshal_context();
 		sPlayer = player;
 	}
 
@@ -13,17 +14,19 @@ namespace EmoteEngineNet {
 		sPlayer->AddRef();
 	}
 
-	void EmotePlayer::AssignState(IEmotePlayer__TYPE* another)
-	{
-		sPlayer->AssignState(another);
-	}
+	//void EmotePlayer::AssignState(IEmotePlayer__TYPE* another)
+	//void EmotePlayer::AssignState(Adapter::EmotePlayerBase^ another)
+	//{
+	//	sPlayer->AssignState(another);
+	//}
 
-	void EmotePlayer::AssignState(EmotePlayer another)
-	{
-		sPlayer->AssignState(another.sPlayer);
-	}
+	//void EmotePlayer::AssignState(EmotePlayer another)
+	//{
+	//	sPlayer->AssignState(another.sPlayer);
+	//}
 
-	IEmotePlayer__TYPE* EmotePlayer::Clone()
+	//IEmotePlayer__TYPE* EmotePlayer::Clone()
+	Adapter::EmotePlayerBase^ EmotePlayer::Clone()
 	{
 		return sPlayer->Clone();
 	}
@@ -55,12 +58,12 @@ namespace EmoteEngineNet {
 
 	void EmotePlayer::FadeInTimeline(String^ label, float frameCount, float easing)
 	{
-		sPlayer->FadeInTimeline(StringToCharPtr(label), frameCount, easing);
+		sPlayer->FadeInTimeline(label, frameCount, easing);
 	}
 
 	void EmotePlayer::FadeOutTimeline(String^ label, float frameCount, float easing)
 	{
-		sPlayer->FadeOutTimeline(StringToCharPtr(label), frameCount, easing);
+		sPlayer->FadeOutTimeline(label, frameCount, easing);
 	}
 
 	float EmotePlayer::GetBustScale()
@@ -139,12 +142,12 @@ namespace EmoteEngineNet {
 
 	float EmotePlayer::GetTimelineBlendRatio(String^ label)
 	{
-		return sPlayer->GetTimelineBlendRatio(StringToCharPtr(label));
+		return sPlayer->GetTimelineBlendRatio(label);
 	}
 
 	float EmotePlayer::GetVariable(String^ var)
 	{
-		return sPlayer->GetVariable(StringToCharPtr(var));
+		return sPlayer->GetVariable(var);
 	}
 
 	String^ EmotePlayer::GetVariableFrameLabelAt(uint32_t variableIndex, uint32_t frameIndex)
@@ -179,7 +182,7 @@ namespace EmoteEngineNet {
 
 	bool EmotePlayer::IsLoopTimeline(String^ label)
 	{
-		return sPlayer->IsLoopTimeline(StringToCharPtr(label));
+		return sPlayer->IsLoopTimeline(label);
 	}
 
 	bool EmotePlayer::IsModified()
@@ -189,7 +192,7 @@ namespace EmoteEngineNet {
 
 	bool EmotePlayer::IsTimelinePlaying(String^ label)
 	{
-		return sPlayer->IsTimelinePlaying(StringToCharPtr(label));
+		return sPlayer->IsTimelinePlaying(label);
 	}
 
 	void EmotePlayer::OffsetCoord(int ofsx, int ofsy)
@@ -214,7 +217,7 @@ namespace EmoteEngineNet {
 
 	void EmotePlayer::PlayTimeline(String^ label, TimelinePlayFlags flag)
 	{
-		sPlayer->PlayTimeline(StringToCharPtr(label), static_cast<emote_uint32_t>(flag));
+		sPlayer->PlayTimeline(label, flag);
 	}
 
 	void EmotePlayer::Progress(float ms)
@@ -284,19 +287,19 @@ namespace EmoteEngineNet {
 
 	void EmotePlayer::SetTimelineBlendRatio(String^ label, float value, float frameCount, float easing, bool stopWhenBlendDone)
 	{
-		sPlayer->SetTimelineBlendRatio(StringToCharPtr(label), value, frameCount, easing, stopWhenBlendDone);
+		sPlayer->SetTimelineBlendRatio(label, value, frameCount, easing, stopWhenBlendDone);
 	}
 
 	void EmotePlayer::SetVariable(String^ var, float value, float frameCount, float easing)
 	{
-		sPlayer->SetVariable(StringToCharPtr(var), value, frameCount, easing);
+		sPlayer->SetVariable(var, value, frameCount, easing);
 	}
 
 	void EmotePlayer::SetVariables(IDictionary<String^, float>^ table, float time, float easing)
 	{
 		for each(KeyValuePair<String^, float> current in table)
 		{
-			sPlayer->SetVariable(StringToCharPtr(current.Key), current.Value, (float)((double)time * MSTOF60THS), easing);
+			sPlayer->SetVariable(current.Key, current.Value, (float)((double)time * MSTOF60THS), easing);
 		}
 	}
 
@@ -317,7 +320,7 @@ namespace EmoteEngineNet {
 
 	void EmotePlayer::StopTimeline(String^ label)
 	{
-		sPlayer->StopTimeline(StringToCharPtr(label));
+		sPlayer->StopTimeline(label);
 	}
 
 	void EmotePlayer::StopWind()
@@ -325,24 +328,25 @@ namespace EmoteEngineNet {
 		sPlayer->StopWind();
 	}
 
-	const char* EmotePlayer::StringToCharPtr(String^ str)
-	{
-		if (!String::IsNullOrWhiteSpace(str) && str->Length <= 50)
-		{
-			return context->marshal_as<char const *, System::String>(str);
-		}
-		return (char *)nulString;
-	}
+	//const char* EmotePlayer::StringToCharPtr(String^ str)
+	//{
+	//	if (!String::IsNullOrWhiteSpace(str) && str->Length <= 50)
+	//	{
+	//		return context->marshal_as<char const *, System::String>(str);
+	//	}
+	//	return (char *)nulString;
+	//}
 
 	EmotePlayer::~EmotePlayer()
 	{
-		if (sPlayer == NULL)
+		//if (sPlayer == NULL)
+		if (sPlayer == nullptr)
 			return;
 		sPlayer->Release();
 	}
 
-	IEmotePlayer__TYPE* EmotePlayer::NativePlayer::get()
-	{
-		return sPlayer;
-	}
+	//IEmotePlayer__TYPE* EmotePlayer::NativePlayer::get()
+	//{
+	//	return sPlayer;
+	//}
 }

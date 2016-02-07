@@ -1,6 +1,7 @@
 #pragma once
 #include "Lock.h"
 #include "iemote.h"
+#include "EmoteDriverAdapter.h"
 #include "Emote.h"
 #include "EmoteDevice.h"
 #include "Enums.h"
@@ -13,20 +14,22 @@ using namespace System::Runtime::InteropServices;
 using namespace msclr::interop;
 
 namespace EmoteEngineNet {
-	static const float MSTOF60THS = 60.0f / 1000.0f;
-	static const float F60THSTOMS = 1000.0f / 60.0f;
+	//static const float MSTOF60THS = 60.0f / 1000.0f;
+	//static const float F60THSTOMS = 1000.0f / 60.0f;
 
 
 	public ref class EmotePlayer
 	{
 	internal:
-		EmotePlayer(IEmotePlayer__TYPE* player);
-		IEmotePlayer__TYPE* Clone();
+		//EmotePlayer(IEmotePlayer__TYPE* player);
+		EmotePlayer(Adapter::EmotePlayerBase^ player);
+		//IEmotePlayer__TYPE* Clone();
+		Adapter::EmotePlayerBase^ Clone();
 	private:
 		~EmotePlayer();
 	public:
 		void AddRef();
-		void AssignState(EmotePlayer another);
+		//void AssignState(EmotePlayer another);
 		uint32_t CountDiffTimelines();
 		uint32_t CountMainTimelines();
 		uint32_t CountPlayingTimelines();
@@ -86,19 +89,21 @@ namespace EmoteEngineNet {
 		void StopWind();
 
 	internal:
-		void AssignState(IEmotePlayer__TYPE* another);
+		////void AssignState(IEmotePlayer__TYPE* another);
+		//void AssignState(Adapter::EmotePlayerBase^ another);
 
 	internal:
-		property IEmotePlayer__TYPE* NativePlayer
-		{
-			IEmotePlayer__TYPE* get();
-		}
+		//property IEmotePlayer__TYPE* NativePlayer
+		//{
+		//	IEmotePlayer__TYPE* get();
+		//}
 
 	private:
-		const char* StringToCharPtr(String^ str);
-		marshal_context^ context;
+		//const char* StringToCharPtr(String^ str);
+		//marshal_context^ context;
 		int sMouthIndex;
-		IEmotePlayer__TYPE* sPlayer;
+		//IEmotePlayer__TYPE* sPlayer;
+		Adapter::EmotePlayerBase^ sPlayer;
 		int sPoseIndex;
 	};
 }

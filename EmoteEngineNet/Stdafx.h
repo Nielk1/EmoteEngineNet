@@ -22,6 +22,7 @@
 //#define IEmotePlayer__TYPE IEmotePlayer_3_4
 
 #include <cstdint>
+#include "EmoteDriverAdapter.h"
 #include "iemote.h"
 #include "Emote.h"
 #include "EmoteDevice.h"
@@ -50,5 +51,3 @@ static uint32_t clp(uint32_t x)
 	x = (expr_1B | expr_1B >> 8);
 	return (x >> 16 | x) + 1;
 }
-
-static byte nulString = '\0';

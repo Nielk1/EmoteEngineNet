@@ -153,15 +153,16 @@ namespace EmoteEngineNet {
 
 		IDirect3DTexture9* sCanvasTexture;
 
-		IEmoteDevice__TYPE* sEmoteDevice;
+		//IEmoteDevice__TYPE* sEmoteDevice;
+		Adapter::EmoteDeviceBase^ sEmoteDevice;
 	
 		bool transparent = false;
 
 	public:
-		EmoteFactoryFunction_3_52 EmoteCreate_3_52;
-		EmoteFactoryFunction_3_4 EmoteCreate_3_4;
-		EmoteFactoryFunction_NEKO1 EmoteCreate_NEKO1;
-		EmoteFactoryFunction_NEKO0 EmoteCreate_NEKO0;
+		//EmoteFactoryFunction_3_52 EmoteCreate_3_52;
+		//EmoteFactoryFunction_3_4 EmoteCreate_3_4;
+		//EmoteFactoryFunction_NEKO1 EmoteCreate_NEKO1;
+		//EmoteFactoryFunction_NEKO0 EmoteCreate_NEKO0;
 		//EmoteFactoryFunction__TYPE EmoteCreate__TYPE;
 
 		EmoteFilterTextureFunction EmoteFilterTexture;

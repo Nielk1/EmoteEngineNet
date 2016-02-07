@@ -1,6 +1,7 @@
 #pragma once
 
 #include "iemote.h"
+#include "EmoteDriverAdapter.h"
 #include "Emote.h"
 #include "EmotePlayer.h"
 #include "Enums.h"
@@ -47,7 +48,8 @@ namespace EmoteEngineNet {
 		void SetShaderModel(ShaderModel shaderModel);
 
 	internal:
-		EmoteDevice(::IEmoteDevice__TYPE* sDevice, Emote^ _emote);
+		//EmoteDevice(::IEmoteDevice__TYPE* sDevice, Emote^ _emote);
+		EmoteDevice(Adapter::EmoteDeviceBase^ sDevice, Emote^ _emote);
 		void OnRenderTarget(IDirect3DTexture9* renderTargetTexture);
 		EmotePlayer ^CreatePlayer(String^ path);
 		EmotePlayer ^CreatePlayer(Stream^ stream);
@@ -56,10 +58,9 @@ namespace EmoteEngineNet {
 		void EmoteDevice::CopyStreamToNativePtr(Stream^ src, unsigned char* dst);
 
 	internal:
-		property ::IEmoteDevice__TYPE* NativeDevice {
-			::IEmoteDevice__TYPE* get();
-		}
-
+		//property ::IEmoteDevice__TYPE* NativeDevice {
+		//	::IEmoteDevice__TYPE* get();
+		//}
 
 	public:
 		property TextureFilterFunction^ TextureFilter {
@@ -75,7 +76,8 @@ namespace EmoteEngineNet {
 	private:
 		TextureFilterFunction^ backing_store__TextureFilter;
 		bool backing_store__UseTextureFilter;
-		IEmoteDevice__TYPE* device = NULL;
+		//IEmoteDevice__TYPE* device = NULL;
+		Adapter::EmoteDeviceBase^ device = nullptr;
 
 		Emote^ emote;
 	};
