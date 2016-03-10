@@ -13,7 +13,7 @@ namespace EmoteEngineNet {
 		EmoteInit(dxHandle);
 	}
 	Emote::Emote(IntPtr handle, bool useD3DSurface) {
-		D3DInit(handle, -1, -1, false, false);
+		D3DInit(handle, -1, -1, useD3DSurface, false);
 	}
 	Emote::Emote(IntPtr handle, int width, int height) {
 		D3DInit(handle, width, height, false, false);
