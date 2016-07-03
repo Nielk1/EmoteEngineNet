@@ -37,4 +37,10 @@ namespace EmoteEngineNet
 		v3_52,
 		NEKO0,
 	};
+
+	public enum class ColorType : uint32_t
+	{
+		BGRA,
+		RGBA
+	};
 }
